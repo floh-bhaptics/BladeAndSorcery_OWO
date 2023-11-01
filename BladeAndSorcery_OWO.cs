@@ -87,35 +87,5 @@ namespace BladeAndSorcery_OWO
         }
 
 
-        /*
-        [HarmonyPatch(typeof(SpellCaster), "Fire", new Type[] { })]
-        public class bhaptics_CastFire
-        {
-            [HarmonyPostfix]
-            public static void Postfix(SpellCaster __instance)
-            {
-                bool isRight = (__instance.side == Side.Right);
-                bool twoHanded = (__instance.isMerging);
-                tactsuitVr.CastSpell(isRight, twoHanded);
-            }
-        }
-        */
-
-
-        /*
-         * TimeManager.SetSlowMotion
-         * SpellMergeData.Merge
-         * CameraEffects.RefreshHealth
-            * Player.local.creature.state != Creature.State.Dead && !Player.local.creature.isKilled && Player.local.creature.currentHealth <= Player.local.creature.maxHealth * 0.1f && Player.local.creature.currentHealth > 0.01f
-         * SpellCastCharge.OnCrystalSlam
-         * SpellMergeFire.Explosion
-         * Holder.Snap
-         * Holder.UnSnap
-            * if (__instance.drawSlot == Holder.DrawSlot.BackRight)
-            * else if (__instance.drawSlot == Holder.DrawSlot.BackLeft)
-         * SpellCastGravity.PushPlayer
-         * 
-        */
-
     }
 }
