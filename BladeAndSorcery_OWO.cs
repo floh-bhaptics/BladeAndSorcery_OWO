@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using ThunderRoad;
 
+[assembly: MelonInfo(typeof(BladeAndSorcery_OWO.BladeAndSorcery_OWO), "BladeAndSorcery_OWO", "1.0.0", "Florian Fahrenberger")]
+[assembly: MelonGame("Warpfrog", "BladeAndSorcery")]
+
 namespace BladeAndSorcery_OWO
 {
     public class BladeAndSorcery_OWO : MelonMod
@@ -29,10 +32,57 @@ namespace BladeAndSorcery_OWO
             public static void Postfix(BhapticsHandler __instance, float locationAngle, float locationHeight, BhapticsHandler.FeedbackType effect, bool reflected)
             {
                 string pattern = effect.ToString();
-                if (pattern.Contains("Right"))
+                if (pattern == "NoFeedback") return;
+                if (pattern == "HeartBeatFast") pattern = "HeartBeat";
+
+                if ( (pattern.Contains("Player")) || (pattern.Contains("Gauntlets")) || (pattern.Contains("Climbing")) )
+                    if (pattern.Contains("Right"))
+                        if (reflected) pattern = pattern.Replace("Right", "Left");
+                if (pattern.Contains("DamageRightArm"))
+                {
+                    pattern = "DamageRightArm";
+                    if (reflected) pattern = pattern.Replace("RightArm", "LeftArm");
+                }
+                if (pattern.Contains("PlayerSpell"))
+                {
+                    pattern = "PlayerSpellRight";
                     if (reflected) pattern = pattern.Replace("Right", "Left");
-                if ((locationAngle == 0f) && (locationHeight == 0f)) tactsuitVr.PlayBackFeedback(pattern);
-                else tactsuitVr.PlayBackHit(pattern, locationAngle, locationHeight);
+                }
+                if (pattern.Contains("PlayerTelekinesis"))
+                {
+                    pattern = "PlayerTelekinesisRight";
+                    if (reflected) pattern = pattern.Replace("Right", "Left");
+                }
+
+                pattern = pattern.Replace("Blade", "");
+                pattern = pattern.Replace("Other", "");
+
+                pattern = pattern.Replace("Wood", "");
+                pattern = pattern.Replace("Metal", "");
+                pattern = pattern.Replace("Stone", "");
+                pattern = pattern.Replace("Fabric", "");
+                pattern = pattern.Replace("Flesh", "");
+
+                pattern = pattern.Replace("Pierce", "");
+                pattern = pattern.Replace("Slash", "");
+                pattern = pattern.Replace("Blunt", "");
+
+                pattern = pattern.Replace("Small", "");
+                pattern = pattern.Replace("Large", "");
+
+                pattern = pattern.Replace("LRD", "");
+                pattern = pattern.Replace("LRU", "");
+                pattern = pattern.Replace("RLD", "");
+                pattern = pattern.Replace("RLU", "");
+
+                if (pattern.Contains("DamageVest"))
+                {
+                    pattern = "DamageVest";
+                    tactsuitVr.PlayBackHit(pattern, locationAngle, locationHeight);
+                }
+                else tactsuitVr.PlayBackFeedback(pattern);
+                // if ((locationAngle == 0f) && (locationHeight == 0f)) tactsuitVr.PlayBackFeedback(pattern);
+                // else tactsuitVr.PlayBackHit(pattern, locationAngle, locationHeight);
             }
         }
 
