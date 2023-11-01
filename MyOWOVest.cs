@@ -149,13 +149,39 @@ namespace MyOWOVest
         }
 
 
-        public void PlayBackHit()
+        public void PlayBackHit(string effect, float xzAngle, float yShift)
         {
-            Sensation sensation = Sensation.ShotEntry;
+            /*
+            OWOSensation sensation = OWOSensation.ShotEntry;
             // two parameters can be given to the pattern to move it on the vest:
             // 1. An angle in degrees [0, 360] to turn the pattern to the left
             // 2. A shift [-0.5, 0.5] in y-direction (up and down) to move it up or down
-            OWO.Send(sensation, Muscle.Pectoral_L, Muscle.Pectoral_R);
+            if ((xzAngle < 90f))
+            {
+                if (yShift >= 0f) OWO.Send(sensation, OWOMuscle.Pectoral_Right);
+                else OWO.Send(sensation, OWOMuscle.Abdominal_Right);
+            }
+            if ((xzAngle > 90f) && (xzAngle < 180f))
+            {
+                if (yShift >= 0f) OWO.Send(sensation, OWOMuscle.Dorsal_Right);
+                else OWO.Send(sensation, OWOMuscle.Lumbar_Right);
+            }
+            if ((xzAngle > 180f) && (xzAngle < 270f))
+            {
+                if (yShift >= 0f) OWO.Send(sensation, OWOMuscle.Dorsal_Left);
+                else OWO.Send(sensation, OWOMuscle.Lumbar_Left);
+            }
+            if ((xzAngle > 270f))
+            {
+                if (yShift >= 0f) OWO.Send(sensation, OWOMuscle.Pectoral_Right);
+                else OWO.Send(sensation, OWOMuscle.Abdominal_Right);
+            }
+            */
+            if ((xzAngle < 180f))
+            {
+                PlayBackFeedback(effect);
+            }
+            else PlayBackFeedback(effect);
         }
 
         public void Recoil(bool isRightHand, bool isTwoHanded = false)
