@@ -34,6 +34,7 @@ namespace BladeAndSorcery_OWO
                 string pattern = effect.ToString();
                 if (pattern == "NoFeedback") return;
                 if (pattern == "HeartBeatFast") pattern = "HeartBeat";
+                if (pattern == "DefaultDamage") pattern = "DamageVest";
 
                 if ( (pattern.Contains("Player")) || (pattern.Contains("Gauntlets")) || (pattern.Contains("Climbing")) )
                     if (pattern.Contains("Right"))
@@ -56,6 +57,8 @@ namespace BladeAndSorcery_OWO
 
                 pattern = pattern.Replace("Blade", "");
                 pattern = pattern.Replace("Other", "");
+                pattern = pattern.Replace("Player", "");
+                pattern = pattern.Replace("Arrow", "");
 
                 pattern = pattern.Replace("Wood", "");
                 pattern = pattern.Replace("Metal", "");
