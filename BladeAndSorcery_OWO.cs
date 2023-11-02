@@ -25,20 +25,20 @@ namespace BladeAndSorcery_OWO
 
         }
 
-        [HarmonyPatch(typeof(BhapticsHandler), "PlayHaptic", new Type[] { typeof(float), typeof(float), typeof(BhapticsHandler.FeedbackType), typeof(bool), typeof(float), typeof(BhapticsHandler.FeedbackType), typeof(bool), typeof(float) })]
-        public class bhaptics_PlayBhapticsEffect
+
+        [HarmonyPatch(typeof(BhapticsHandler), "PlayHapticInternal", new Type[] { typeof(float), typeof(float), typeof(BhapticsHandler.FeedbackType), typeof(float), typeof(bool), typeof(bool), typeof(float) })]
+        public class bhaptics_PlayBhapticsEffectInternal
         {
             [HarmonyPostfix]
-            public static void Postfix(BhapticsHandler __instance, float locationAngle, float locationHeight, BhapticsHandler.FeedbackType effect, bool reflected)
+            public static void Postfix(BhapticsHandler __instance, float locationAngle, float locationHeight, BhapticsHandler.FeedbackType effect, float intensityMultiplier, bool reflected)
             {
                 string pattern = effect.ToString();
+                tactsuitVr.LOG("Original pattern internal: " + pattern + " reflected: " + reflected.ToString() + " Intensity: " + intensityMultiplier.ToString());
                 if (pattern == "NoFeedback") return;
-                if (pattern == "HeartBeatFast") pattern = "HeartBeat";
+                if (pattern == "HeartBeatFast") return;
+                if (pattern == "HeartBeat") return;
                 if (pattern == "DefaultDamage") pattern = "DamageVest";
 
-                if ( (pattern.Contains("Player")) || (pattern.Contains("Gauntlets")) || (pattern.Contains("Climbing")) )
-                    if (pattern.Contains("Right"))
-                        if (reflected) pattern = pattern.Replace("Right", "Left");
                 if (pattern.Contains("DamageRightArm"))
                 {
                     pattern = "DamageRightArm";
@@ -47,13 +47,15 @@ namespace BladeAndSorcery_OWO
                 if (pattern.Contains("PlayerSpell"))
                 {
                     pattern = "PlayerSpellRight";
-                    if (reflected) pattern = pattern.Replace("Right", "Left");
                 }
                 if (pattern.Contains("PlayerTelekinesis"))
                 {
                     pattern = "PlayerTelekinesisRight";
-                    if (reflected) pattern = pattern.Replace("Right", "Left");
                 }
+                if ((pattern.Contains("Player")) || (pattern.Contains("Gauntlets")) || (pattern.Contains("Climbing")))
+                    if (pattern.Contains("Right"))
+                        if (reflected) pattern = pattern.Replace("Right", "Left");
+
 
                 pattern = pattern.Replace("Blade", "");
                 pattern = pattern.Replace("Other", "");
@@ -88,7 +90,6 @@ namespace BladeAndSorcery_OWO
                 // else tactsuitVr.PlayBackHit(pattern, locationAngle, locationHeight);
             }
         }
-
 
     }
 }

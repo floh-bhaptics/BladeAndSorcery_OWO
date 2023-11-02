@@ -49,7 +49,8 @@ namespace MyOWOVest
             LOG("Initializing suit");
 
             // New auth.
-            var gameAuth = GameAuth.Create(AllBakedSensations()).WithId("0");
+            var gameAuth = GameAuth.Create(AllBakedSensations());
+                // .WithId("0");
 
             OWO.Configure(gameAuth);
             string myIP = getIpFromFile("OWO_Manual_IP.txt");
@@ -201,9 +202,11 @@ namespace MyOWOVest
 
         public void PlayBackFeedback(string feedback, float intensity = 1.0f)
         {
+            LOG("Pattern: " +  feedback);
             if (FeedbackMap.ContainsKey(feedback))
             {
                 OWO.Send(FeedbackMap[feedback]);
+                LOG("Played back");
             }
             else LOG("Feedback not registered: " + feedback);
         }
