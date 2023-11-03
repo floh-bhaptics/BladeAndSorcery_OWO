@@ -25,6 +25,17 @@ namespace BladeAndSorcery_OWO
 
         }
 
+        /*
+        [HarmonyPatch(typeof(Equipment), "ManageHolsterHandlers", new Type[] { typeof(bool) })]
+        public class bhaptics_HolsterInteraction
+        {
+            [HarmonyPostfix]
+            public static void Postfix(Equipment __instance, bool add)
+            {
+
+            }
+        }
+        */
 
         [HarmonyPatch(typeof(BhapticsHandler), "PlayHapticInternal", new Type[] { typeof(float), typeof(float), typeof(BhapticsHandler.FeedbackType), typeof(float), typeof(bool), typeof(bool), typeof(float) })]
         public class bhaptics_PlayBhapticsEffectInternal
@@ -33,7 +44,7 @@ namespace BladeAndSorcery_OWO
             public static void Postfix(BhapticsHandler __instance, float locationAngle, float locationHeight, BhapticsHandler.FeedbackType effect, float intensityMultiplier, bool reflected)
             {
                 string pattern = effect.ToString();
-                tactsuitVr.LOG("Original pattern internal: " + pattern + " reflected: " + reflected.ToString() + " Intensity: " + intensityMultiplier.ToString());
+                //tactsuitVr.LOG("Original pattern internal: " + pattern + " reflected: " + reflected.ToString() + " Intensity: " + intensityMultiplier.ToString());
                 if (pattern == "NoFeedback") return;
                 if (pattern == "HeartBeatFast") return;
                 if (pattern == "HeartBeat") return;
@@ -80,14 +91,16 @@ namespace BladeAndSorcery_OWO
                 pattern = pattern.Replace("RLD", "");
                 pattern = pattern.Replace("RLU", "");
 
+                // Melee feedback only triggers on the left hands right now, which is weird
+                // So better shut it off overall.
+                if (pattern.Contains("Melee")) return;
+
                 if (pattern.Contains("DamageVest"))
                 {
                     pattern = "DamageVest";
                     tactsuitVr.PlayBackHit(pattern, locationAngle, locationHeight);
                 }
                 else tactsuitVr.PlayBackFeedback(pattern);
-                // if ((locationAngle == 0f) && (locationHeight == 0f)) tactsuitVr.PlayBackFeedback(pattern);
-                // else tactsuitVr.PlayBackHit(pattern, locationAngle, locationHeight);
             }
         }
 

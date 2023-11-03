@@ -176,37 +176,13 @@ namespace MyOWOVest
             PlayBackFeedback(pattern);
         }
 
-        public void Recoil(bool isRightHand, bool isTwoHanded = false)
-        {
-            if (isTwoHanded)
-            {
-                PlayBackFeedback("Melee_both");
-                //OWO.Send(Sensation.GunRecoil, Muscle.Arm_R.WithIntensity(70), Muscle.Arm_L.WithIntensity(70));
-                return;
-            }
-            if (isRightHand) PlayBackFeedback("Melee_R");
-            else PlayBackFeedback("Melee_L");
-        }
-
-        public void CastSpell(bool isRightHand, bool isTwoHanded = false)
-        {
-            if (isTwoHanded)
-            {
-                PlayBackFeedback("CastSpell_both");
-                //OWO.Send(Sensation.GunRecoil, Muscle.Arm_R.WithIntensity(70), Muscle.Arm_L.WithIntensity(70));
-                return;
-            }
-            if (isRightHand) PlayBackFeedback("CastSpell_R");
-            else PlayBackFeedback("CastSpell_L");
-        }
-
         public void PlayBackFeedback(string feedback, float intensity = 1.0f)
         {
-            LOG("Pattern: " +  feedback);
+            //LOG("Pattern: " +  feedback);
             if (FeedbackMap.ContainsKey(feedback))
             {
                 OWO.Send(FeedbackMap[feedback]);
-                LOG("Played back");
+                //LOG("Played back");
             }
             else LOG("Feedback not registered: " + feedback);
         }
