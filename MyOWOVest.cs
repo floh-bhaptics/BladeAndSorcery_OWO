@@ -6,6 +6,7 @@ using System.Threading;
 using MelonLoader;
 using OWOGame;
 using System.Net;
+using System.Linq;
 
 namespace MyOWOVest
 {
@@ -53,12 +54,12 @@ namespace MyOWOVest
                 // .WithId("0");
 
             OWO.Configure(gameAuth);
-            string myIP = getIpFromFile("OWO_Manual_IP.txt");
-            if (myIP == "") await OWO.AutoConnect();
+            string[] myIPs = getIPsFromFile("OWO_Manual_IP.txt");
+            if (myIPs.Length == 0) await OWO.AutoConnect();
             else
             {
-                LOG("Found manual IP address: " + myIP);
-                await OWO.Connect(myIP);
+                LOG("Found manual IP addresses: " + myIPs.ToString());
+                await OWO.Connect(myIPs);
             }
 
             if (OWO.ConnectionState == ConnectionState.Connected)
@@ -69,17 +70,21 @@ namespace MyOWOVest
             if (suitDisabled) LOG("Owo is not enabled?!?!");
         }
 
-        public string getIpFromFile(string filename)
+        public string[] getIPsFromFile(string filename)
         {
-            string ip = "";
+            string[] ips = { };
             string filePath = Directory.GetCurrentDirectory() + "\\Mods\\" + filename;
             if (File.Exists(filePath))
             {
-                string fileBuffer = File.ReadAllText(filePath);
-                IPAddress address;
-                if (IPAddress.TryParse(fileBuffer, out address)) ip = fileBuffer;
+                //string fileBuffer = File.ReadAllText(filePath);
+                var lines = File.ReadLines(filePath);
+                foreach (var line in lines)
+                {
+                    IPAddress address;
+                    if (IPAddress.TryParse(line, out address)) ips.Append(line);
+                }
             }
-            return ip;
+            return ips;
         }
 
         private BakedSensation[] AllBakedSensations()
