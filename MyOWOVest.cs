@@ -57,7 +57,6 @@ namespace MyOWOVest
             if (myIPs.Length == 0) await OWO.AutoConnect();
             else
             {
-                LOG("Found manual IP addresses: " + myIPs.ToString());
                 await OWO.Connect(myIPs);
             }
 
@@ -71,19 +70,20 @@ namespace MyOWOVest
 
         public string[] getIPsFromFile(string filename)
         {
-            string[] ips = { };
+            List<string> ips = new List<string>();
             string filePath = Directory.GetCurrentDirectory() + "\\Mods\\" + filename;
             if (File.Exists(filePath))
             {
-                //string fileBuffer = File.ReadAllText(filePath);
+                LOG("Manual IP file found: " + filePath);
                 var lines = File.ReadLines(filePath);
                 foreach (var line in lines)
                 {
                     IPAddress address;
-                    if (IPAddress.TryParse(line, out address)) ips.Append(line);
+                    if (IPAddress.TryParse(line, out address)) ips.Add(line);
+                    else LOG("IP not valid? ---" + line + "---");
                 }
             }
-            return ips;
+            return ips.ToArray();
         }
 
         private BakedSensation[] AllBakedSensations()

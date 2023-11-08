@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using ThunderRoad;
 
-[assembly: MelonInfo(typeof(BladeAndSorcery_OWO.BladeAndSorcery_OWO), "BladeAndSorcery_OWO", "1.0.0", "Florian Fahrenberger")]
+[assembly: MelonInfo(typeof(BladeAndSorcery_OWO.BladeAndSorcery_OWO), "BladeAndSorcery_OWO", "1.0.1", "Florian Fahrenberger")]
 [assembly: MelonGame("Warpfrog", "BladeAndSorcery")]
 
 namespace BladeAndSorcery_OWO
